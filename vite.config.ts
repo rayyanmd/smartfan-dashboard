@@ -11,5 +11,5 @@ export default defineConfig({
       "@": resolve(import.meta.dirname, "./src"),
     },
   },
-  base: process.env.VITE_BASE_PATH || "/smartfan-dashboard",
+  base: "./",
 })
