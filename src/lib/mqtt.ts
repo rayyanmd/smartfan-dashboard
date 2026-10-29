@@ -1,17 +1,13 @@
 import mqtt, { type MqttClient } from "mqtt"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-const MQTT_URL = "ws://broker.hivemq.com:8000/mqtt"
+const MQTT_URL = "wss://broker.hivemq.com:8884/mqtt"
 const TELEMETRY_TOPIC = "sic/smartfan/telemetry"
 const COMMAND_TOPIC = "sic/smartfan/cmd/mode"
 
 export type Mode = "AUTO" | "MANUAL" | "OFF"
 export type ConnectionStatus =
-  | "connecting"
-  | "connected"
-  | "reconnecting"
-  | "disconnected"
-  | "error"
+  "connecting" | "connected" | "reconnecting" | "disconnected" | "error"
 
 export type Telemetry = {
   mode: Mode | null
@@ -45,7 +41,9 @@ function readNumber(value: unknown): number | null {
 }
 
 function readMode(value: unknown): Mode | null {
-  return value === "AUTO" || value === "MANUAL" || value === "OFF" ? value : null
+  return value === "AUTO" || value === "MANUAL" || value === "OFF"
+    ? value
+    : null
 }
 
 function readFanStatus(value: unknown): boolean | null {
@@ -78,11 +76,7 @@ function readArray<T>(
     return null
   }
 
-  return [
-    reader(value[0]),
-    reader(value[1]),
-    reader(value[2]),
-  ]
+  return [reader(value[0]), reader(value[1]), reader(value[2])]
 }
 
 function parseTelemetry(payload: Uint8Array): TelemetryUpdate | null {
